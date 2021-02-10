@@ -1,0 +1,8 @@
+{
+  "name": "node-api-typescript",
+  "version": "TypeScript Node.js API",
+  "main": "index.js",
+  "repository": "https://github.com/DaviSaraiva/node-api-typescript.git",
+  "author": "DaviSaraiva <davi123467890@gmail.com>",
+  "license": "MIT"
+}
