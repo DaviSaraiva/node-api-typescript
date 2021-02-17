@@ -11,13 +11,15 @@
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
     "style:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "style:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "test:functional": "jest --projects ./test --forceExit --runInBand"
+    "test:functional": "jest --projects ./test --forceExit --runInBand",
+    "test:unit": "jest"
   },
   "repository": "https://github.com/DaviSaraiva/node-api-typescript.git",
   "author": "DaviSaraiva <davi123467890@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@overnightjs/core": "^1.7.4",
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "module-alias": "^2.2.2"
