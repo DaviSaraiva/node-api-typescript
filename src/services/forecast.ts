@@ -1,5 +1,6 @@
 import { ForecastPoint, StormGlass } from '@src/clients/stormGlass';
 
+//isso tudo foi para chamar client pegar dados normalizados fazer manger deles e calcular o reight
 //enum facilita a gente reusar os valores, não precisa mudar a string basta mudar o enum.  
 export enum BeachPosition {
     S = 'S',
