@@ -5,6 +5,7 @@ describe('Beach forecast functional tests', () => {
     // Make sure we use toEqual to check value not the object and array itself
     expect(body).toEqual([
       {
+        //exemplo quero agrupar por tempo, cada hora tem um forecast com uma lista de praias pra quela hora, condicao do surf pra quela hora
         time: '2020-04-26T00:00:00+00:00',
         forecast: [
           {
