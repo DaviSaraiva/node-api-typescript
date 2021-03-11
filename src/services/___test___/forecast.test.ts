@@ -1,12 +1,13 @@
 import { StormGlass } from '@src/clients/stormGlass';
 import stormGlassNormalizedResponseFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
-import { Beach, BeachPosition, Forecast } from '../forecast';
+import { Beach, BeachPosition, Forecast, ForecastProcesingInternalError } from '../forecast';
 
 jest.mock('@src/clients/stormGlass');
 
 describe('Forecast Service', () => {
+    const mockedStormGlassService = new StormGlass as jest.Mocked<StormGlass>;
     it('should return the forecast for a list of beaches', async () => {
-        StormGlass.prototype.fetchPoints = jest.fn().mockResolvedValue(stormGlassNormalizedResponseFixture);
+        mockedStormGlassService.fetchPoints.mockResolvedValue(stormGlassNormalizedResponseFixture);
         //criar aq uma praia pra teste
         const beaches: Beach[] = [
             {
@@ -83,9 +84,29 @@ describe('Forecast Service', () => {
         ];
 
         //vai receber uma instancia do forecast
-        const forecast = new Forecast(new StormGlass());
+        const forecast = new Forecast(mockedStormGlassService);
         //vai recebr de volta a lista de praias
         const beachesWithRating = await forecast.processForecastForBeaches(beaches);
         expect(beachesWithRating).toEqual(expectedResponse);
+    });
+    //se o usuario não tem nehuma praia cadastrada ele deveria retornar uma lista vazia 
+    it('should return an empty list when the beaches array is empty', async () => {
+        const forecast = new Forecast();
+        const response = await forecast.processForecastForBeaches([]);
+        expect(response).toEqual([]);
+    });
+    it('shold throw internal procesing error when something goes wrong during the rating process', async () => {
+        const beaches: Beach[] = [
+            {
+                lat: -33.792726,
+                lng: 151.289824,
+                name: 'Manly',
+                position: BeachPosition.E,
+                user: 'some-id',
+            },
+        ];
+        mockedStormGlassService.fetchPoints.mockRejectedValue('Erro fetching data');
+        const forecast = new Forecast(mockedStormGlassService);
+        await expect(forecast.processForecastForBeaches(beaches)).rejects.toThrow(ForecastProcesingInternalError);
     });
 });

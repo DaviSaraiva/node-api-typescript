@@ -1,4 +1,5 @@
 import { ForecastPoint, StormGlass } from '@src/clients/stormGlass';
+import { InternalError } from '@src/util/errors/internal-error';
 
 //isso tudo foi para chamar client pegar dados normalizados fazer manger deles e calcular o reight
 //enum facilita a gente reusar os valores, não precisa mudar a string basta mudar o enum.  
@@ -26,32 +27,47 @@ export interface TimeForcast {
 //extender mas omitir campo user da interface
 export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint { }
 
+export class ForecastProcesingInternalError extends InternalError {
+    constructor(message: string) {
+        super(`Unexpected error during forecast procesing: ${message}`)
+    }
+}
+
 export class Forecast {
     constructor(protected stormGlass = new StormGlass()) { }
     public async processForecastForBeaches(beaches: Beach[]): Promise<TimeForcast[]> {
-        const pointsWithCorrectSources: BeachForecast[] = [];
-        //para cada uma das praias, loop para a geente conseguir pegar o forecast usando lat e lng
-        for (const beach of beaches) {
-            const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
+        try {
+            const pointsWithCorrectSources: BeachForecast[] = [];
+            //para cada uma das praias, loop para a geente conseguir pegar o forecast usando lat e lng
+            for (const beach of beaches) {
+                const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
 
-            //pegar os points e botar info sobre as praias e info sobre os with
-            const enrichedBeachData = points.map((e) => ({
-                //informacoes que vamos colocar da praia.
-                ...{
-                    lat: beach.lat,
-                    lng: beach.lng,
-                    name: beach.name,
-                    position: beach.position,
-                    rating: 1
-                },
-                ...e,
-            }));
-            //puxar isso pro array final
-            //... prra botar todos no array, ficar todos no mesmo nivel
-            pointsWithCorrectSources.push(...enrichedBeachData);
+                //pegar os points e botar info sobre as praias e info sobre os with
+                const enrichedBeachData = this.enrichedBeachData(points, beach);
+                pointsWithCorrectSources.push(...enrichedBeachData);
+            }
+
+            return this.mapForecastByTime(pointsWithCorrectSources);
+        } catch (error) {
+            throw new ForecastProcesingInternalError(error.message);
         }
-        return this.mapForecastByTime(pointsWithCorrectSources);
     }
+    private enrichedBeachData(points: ForecastPoint[], beach: Beach): BeachForecast[] {
+        return points.map((e) => ({
+            //informacoes que vamos colocar da praia.
+            ...{
+                lat: beach.lat,
+                lng: beach.lng,
+                name: beach.name,
+                position: beach.position,
+                rating: 1
+            },
+            ...e,
+        }));
+        //puxar isso pro array final
+        //... prra botar todos no array, ficar todos no mesmo nivel
+    }
+
     private mapForecastByTime(forecast: BeachForecast[]): TimeForcast[] {
         //Função: O mapForecastByTime vai agrupar os itens da lista pela data/hora (timePoint). Imagine que recebemos da API um array com vários itens fora de ordem e muitos deles com a mesma data/hora. Neste método nós vamos juntar todos com a mesma data e hora.
         //Expplicação:  Na primeira iteração do loop o find não vai encontrar nada pois o array ainda está no seu estado inicial (vazio), o teste de conteúdo do timePoint será falso (if (timePoint)) e, sendo assim, vai criar uma nova entrada para aquela data/hora
