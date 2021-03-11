@@ -1,2 +1,2 @@
 # node-api-typescript
-#mongo db, banco não relacional. Utilizado pq sua integração é simples, e mais facil de escalar horizontalmente, mais facil do que os relacionais 
+#Banco: MongoDb, banco não relacional. Utilizado pq sua integração é simples, e mais facil de escalar horizontalmente, mais facil do que os relacionais. Se essa api fosse pra produção teria muito processamento de dados e teria que escalar bastante, no relacional seria mais custoso pq não daria para separar os dados, ja o não relacional os dados não são relacionados diretamente.
