@@ -90,12 +90,12 @@ describe('Forecast Service', () => {
         expect(beachesWithRating).toEqual(expectedResponse);
     });
     //se o usuario não tem nehuma praia cadastrada ele deveria retornar uma lista vazia 
-    it('deve retornar uma lista vazia quando a matriz de praias estiver vazia', async () => {
+    it('should return an empty list when the beaches array is empty', async () => {
         const forecast = new Forecast();
         const response = await forecast.processForecastForBeaches([]);
         expect(response).toEqual([]);
     });
-    it('deve lançar um erro de processamento interno quando algo der errado durante o processo de classificação', async () => {
+    it('should throw internal processing error when something goes wrong during the rating process', async () => {
         const beaches: Beach[] = [
             {
                 lat: -33.792726,
