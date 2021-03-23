@@ -5,6 +5,7 @@ import * as HTTPUtil from '@src/util/request';
 export interface StormGlassPointSource {
   [key: string]: number;
 }
+// docker start 6656de51723f
 //ponto de previsao
 export interface StormGlassPoint {
   time: string;
@@ -57,7 +58,6 @@ export class StormGlass {
   readonly stormGlassAPIParams =
     'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
   readonly stormGlassAPISource = 'noaa';
-  //'79d49f64-72b2-11eb-8ad5-0242ac130002-79d4a00e-72b2-11eb-8ad5-0242ac130002';
 
   constructor(protected request = new HTTPUtil.Request()) { }
 
