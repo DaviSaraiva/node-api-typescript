@@ -1,4 +1,4 @@
-import { User } from "@src/models/user";
+import { User, comparePasswords } from "@src/models/user";
 
 describe('Users functional tests', () => {
     beforeEach(async () => {
@@ -6,7 +6,7 @@ describe('Users functional tests', () => {
     });
 
     describe('When create a new user', () => {
-        it('Should successfully create a new user', async () => {
+        it('Should successfully create a new user encrypted password', async () => {
             const newUser = {
                 name: 'Jhon Doe',
                 email: 'jhon@mail.com',
@@ -14,8 +14,10 @@ describe('Users functional tests', () => {
             };
             const response = await global.testRequest.post('/users').send(newUser);
             expect(response.status).toBe(201);//codigo http de create, siginifica que uma entidade foi criada no banco de dados
+            await expect(comparePasswords(newUser.password, response.body.password)).resolves.toBeTruthy();
             expect(response.body).toEqual(expect.objectContaining(newUser));
         });
+
         it('Should return 422 when there is a validation error', async () => {
             const newUser = {
                 email: 'john@mail.com',
