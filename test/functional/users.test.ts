@@ -15,7 +15,10 @@ describe('Users functional tests', () => {
             const response = await global.testRequest.post('/users').send(newUser);
             expect(response.status).toBe(201);//codigo http de create, siginifica que uma entidade foi criada no banco de dados
             await expect(comparePasswords(newUser.password, response.body.password)).resolves.toBeTruthy();
-            expect(response.body).toEqual(expect.objectContaining(newUser));
+            expect(response.body).toEqual(expect.objectContaining({
+                ...newUser, ...{ password: expect.any(String) },
+            })
+            );
         });
 
         it('Should return 422 when there is a validation error', async () => {
