@@ -13,3 +13,6 @@ Usado para gerenciamento Json-Web-Token.
 
 Mais informaçções em https://www.npmjs.com/package/@overnightjs/core
 
+# Jest 
+Usado jest para testar o projeto escrito em TypeScript.
+
