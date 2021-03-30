@@ -18,3 +18,4 @@ Usado jest para testar o projeto escrito em TypeScript.
 
 # Json-Web-Tokens
 
+Jwt basicamente é uma combinação de varios hash, utilizar um secret no back-end.
