@@ -16,3 +16,5 @@ Mais informaçções em https://www.npmjs.com/package/@overnightjs/core
 # Jest 
 Usado jest para testar o projeto escrito em TypeScript.
 
+# Json-Web-Tokens
+
