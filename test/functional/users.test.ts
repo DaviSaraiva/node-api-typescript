@@ -1,4 +1,5 @@
-import { User, comparePasswords } from "@src/models/user";
+import { User } from "@src/models/user";
+import AuthService from "@src/services/auth";
 
 describe('Users functional tests', () => {
     beforeEach(async () => {
@@ -14,7 +15,7 @@ describe('Users functional tests', () => {
             };
             const response = await global.testRequest.post('/users').send(newUser);
             expect(response.status).toBe(201);//codigo http de create, siginifica que uma entidade foi criada no banco de dados
-            await expect(comparePasswords(newUser.password, response.body.password)).resolves.toBeTruthy();
+            await expect(AuthService.comparePasswords(newUser.password, response.body.password)).resolves.toBeTruthy();
             expect(response.body).toEqual(expect.objectContaining({
                 ...newUser, ...{ password: expect.any(String) },
             })
