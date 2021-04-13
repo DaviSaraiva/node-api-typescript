@@ -2,6 +2,7 @@ import { Controller, Post } from '@overnightjs/core';
 import { Request, Response } from 'express';
 import { User } from '@src/models/user';
 import { BaseCrontroller } from '.';
+import AuthService from '@src/services/auth';
 
 @Controller('users')
 export class UsersController extends BaseCrontroller {
@@ -15,5 +16,25 @@ export class UsersController extends BaseCrontroller {
             this.sendCreateUpdateErrorResponse(res, error);
         }
     }
-
+    @Post('authenticate')
+    public async authenticate(req: Request, res: Response): Promise<Response | undefined> {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            //usuario não é encontrado
+            return res.status(401).send({
+                code: 401,
+                error: 'User not Found!',
+            });
+        }
+        //comparar as senhas
+        if (!(await AuthService.comparePasswords(password, user.password))) {
+            return res.status(401).send({
+                code: 401,
+                error: 'Password does not match!',
+            });
+        }
+        const token = AuthService.generateToken(user.toJSON())
+        return res.status(200).send({ token: token });
+    }
 }
