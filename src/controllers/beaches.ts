@@ -21,4 +21,3 @@ export class BeachesController {
         }
     }
 }
-//inicializar meu mongo docker start dcd226afe47f

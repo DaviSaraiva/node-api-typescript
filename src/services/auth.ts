@@ -1,9 +1,13 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
+import { User } from '@src/models/user';
+
+export interface DecodedUser extends Omit<User, '_id'> {
+    id: string;
+}
 
 export default class AuthService {
-
     public static async hashPassword(password: string, salt = 10): Promise<string> {
         return await bcrypt.hash(password, salt);
     }
@@ -16,6 +20,11 @@ export default class AuthService {
         return jwt.sign(payload, config.get('App.auth.key'), {
             expiresIn: config.get('App.auth.tokenExpiresIn'),
         });
+    }
+
+    //logica de decoder token
+    public static decodeToken(token: string): DecodedUser {
+        return jwt.verify(token, config.get('App.auth.key')) as DecodedUser;// aq eu forço o TS dizendo que eu sei o que vai retorna no caso DecodedUser
     }
 }
 
