@@ -1,11 +1,24 @@
 import { Beach } from "@src/models/beach";
+import { User } from "@src/models/user";
+import AuthService from "@src/services/auth";
 
 describe('Beaches funcitional tests', () => {
-    //deletar todas as praias que tiver no banco, que o estado do teste estiver limpo quando a gente rodar
-    beforeAll(async () => await Beach.deleteMany({}));
+    const defaultUser = {
+        name: 'John Doe',
+        email: 'john2@mail.com',
+        password: '1234',
+    }
 
-    //criar prai vai ser uma operacao e vai ter um grupo especifico
-    describe('When create beach', () => {
+    //deletar todas as praias e usuarios que tiver no banco, e criar um usuario com o defalutuser gerando um token
+    // legal que com o cod modular a gente pode importa meus serviçoes em qualquer lugar e qualquer um e usar individualmente 
+    let token: string;
+    beforeEach(async () => {
+        await Beach.deleteMany({});
+        await User.deleteMany({});
+        const user = await new User(defaultUser).save();
+        token = AuthService.generateToken(user.toJSON());
+    });
+    describe('When create beach', () => {     //criar praia vai ser uma operacao e vai ter um grupo especifico
         it('should create a beach with success', async () => {
             const newBeach = {
                 lat: -33.792726,
@@ -14,8 +27,9 @@ describe('Beaches funcitional tests', () => {
                 position: 'E',
             };
             //metodo post pra criar uma praia nova
-
-            const response = await global.testRequest.post('/beaches').send(newBeach);
+            const response = await global.testRequest.post('/beaches')
+                .set({ 'x-access-token': token })
+                .send(newBeach);
             expect(response.status).toBe(201);
             expect(response.body).toEqual(expect.objectContaining(newBeach));
         });
@@ -27,7 +41,7 @@ describe('Beaches funcitional tests', () => {
                 name: 'Manly',
                 position: 'E',
             };
-            const response = await global.testRequest.post('/beaches').send(newBeach);
+            const response = await global.testRequest.post('/beaches').set({ 'x-access-token': token }).send(newBeach);
 
             expect(response.status).toBe(422);
             expect(response.body).toEqual({

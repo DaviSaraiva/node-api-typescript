@@ -1,14 +1,18 @@
-import { Controller, Post } from '@overnightjs/core';
+import { ClassMiddleware, Controller, Post } from '@overnightjs/core';
+import { authMiddleware } from '@src/middlewares/auth';
 import { Beach } from '@src/models/beach';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
+//essa rota toda precisa de token
+
 @Controller('beaches')
+@ClassMiddleware(authMiddleware)
 export class BeachesController {
     @Post('')
     public async create(req: Request, res: Response): Promise<void> {
         try {
-            const beach = new Beach(req.body);
+            const beach = new Beach({ ...req.body, ...{ user: req.decoded?.id } });//setando user quando cria uma praia
             const result = await beach.save();
             res.status(201).send(result);
         } catch (error) {
