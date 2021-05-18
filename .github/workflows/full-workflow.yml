@@ -2,32 +2,33 @@ name: Complete workflow
 
 on: ['push']
 
+jobs:
 
-jobs: 
-    build:
-        runs-on: ubuntu-latest
+  build:
 
-        strategy:
-          matrix:
-            node-version:[12.x]
-            mongodb-version:[4.2]
-        
-        steps: 
-           - uses: actions/checkout@v2
-           - run: git fetch --peune --unshallow
-           - name: Use Node.js ${{ matrix.node-version }}
-             uses: actions/setup-node@v1
-             with:
-                node-version: ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
 
-            - name: Start MongoDB
-              uses: supercharge/mongodb-github-action@1.1.0
-              with:
-                 mongodb-version: ${{ matrix.mongodb-version }}
+    strategy:
+      matrix:
+        node-version: [12.x]
+        mongodb-version: [4.2]
 
-            - name: Install dependencies
-              run: yarn --frozen-lockfile
+    steps:
+    - uses: actions/checkout@v2
+    - run: git fetch --prune --unshallow
 
-            - name: Run all tests
-              run: yarn test
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
 
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.1.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+
+    - name: Run all tests
+      run: yarn test
