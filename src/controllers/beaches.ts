@@ -18,9 +18,9 @@ export class BeachesController {
         } catch (error) {
             if (error instanceof mongoose.Error.ValidationError) {
                 //se for erro do mongoose
-                res.status(422).send({ error: error.message })
+                res.status(422).send({ error: error.message });
             } else {
-                res.status(500).send({ error: 'Internal Server Error' })
+                res.status(500).send({ error: 'Internal Server Error' });
             }
         }
     }

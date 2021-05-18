@@ -1,0 +1,20 @@
+
+{
+    "App": {
+      "port": "APP_PORT",
+      "database":{
+        "mongoUrl": "MONGODB_URL"
+      },
+      "resources": {
+        "StormGlass": {
+          "apiUrl": "STORM_GLASS_API_URL",
+          "apiToken": "STORM_GLASS_API_URL"
+        }
+      },
+      "auth": {
+        "key": "some-key"
+      }
+    }
+  }
+
+//aq vai ter as propriedades que vou permitir que sejam sobreescretias por variaveis de ambiente 
