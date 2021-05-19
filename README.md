@@ -7,6 +7,7 @@ Não é utilizado o mongoDb diretamente, é utilizado biblioteca chamada mongose
 
 # API
 A api utilizada é a https://stormglass.io.
+
 Ela fornece previsões de alta resolução para até 10 dias à frente, bem como dados históricos. Dados marinhos, incluindo marés, estão disponíveis para todos os oceanos e mares em todo o mundo.
 
 # OvernightJS
