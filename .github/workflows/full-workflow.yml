@@ -32,3 +32,16 @@ jobs:
 
     - name: Run all tests
       run: yarn test
+    
+    - shell: bash
+      if: github.ref == 'refs/heads/main'
+      name: Create SSH deployment key
+      env:
+        SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: ./scripts/deploy.sh
+
+    - name: Deployment
+      if: github.ref == 'refs/heads/main'
+      run: git remote add umbler ssh://git@kamino.deploy.umbler.com:9922/e8yp83gk/surfarapi-com.git && git push umbler main
+      env:
+        CI: true
