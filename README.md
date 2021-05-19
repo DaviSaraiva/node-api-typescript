@@ -6,8 +6,8 @@ MongoDb, banco não relacional. Utilizado pq sua integração é simples, e mais
 Não é utilizado o mongoDb diretamente, é utilizado biblioteca chamada mongose, uma odm que vai pegar os dados do banco que vem em um formato bson e transformar em objetos javascript.
 
 # API
-A api utilizada é a https://stormglass.io
-A api fornece previsões de alta resolução para até 10 dias à frente, bem como dados históricos. Dados marinhos, incluindo marés, estão disponíveis para todos os oceanos e mares em todo o mundo.
+A api utilizada é a https://stormglass.io.
+Ela fornece previsões de alta resolução para até 10 dias à frente, bem como dados históricos. Dados marinhos, incluindo marés, estão disponíveis para todos os oceanos e mares em todo o mundo.
 
 # OvernightJS
 OvernightJS é uma biblioteca simples para adicionar decoradores TypeScript para métodos destinados a chamar rotas Express. Ele também inclui um pacote para gerenciar json-web-tokens e imprimir logs.
