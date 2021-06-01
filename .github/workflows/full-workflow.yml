@@ -43,6 +43,6 @@ jobs:
 
     - name: Deployment
       if: github.ref == 'refs/heads/main'
-      run: git remote add umbler ssh://git@kamino.deploy.umbler.com:9922/e8yp83gk/surfarapi-com.git && git push umbler main
+      run: git remote add umbler ssh://git@geonosis.deploy.umbler.com:9922/e17gpv6e/surfarapi-node-com.git && git push umbler main
       env:
         CI: true
