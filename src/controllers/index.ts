@@ -1,3 +1,4 @@
+import logger from '@src/logger';
 import { CUSTOM_VALIDATION } from '@src/models/user';
 import { Response } from 'express';
 import mongoose from 'mongoose';
@@ -11,6 +12,7 @@ export abstract class BaseCrontroller {
             const clientErros = this.handleClientErrors(error);
             res.status(clientErros.code).send({ code: clientErros.code, error: clientErros.error });
         } else {
+            logger.error(error);
             res.status(500).send({ code: 500, error: 'Internal Server Error' });
         }
     }
