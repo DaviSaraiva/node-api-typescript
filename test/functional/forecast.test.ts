@@ -50,7 +50,7 @@ describe('Beach forecast functional tests', () => {
     // Make sure we use toEqual to check value not the object and array itself
     expect(body).toEqual(apiForecastResponse1BeachFixture);
   });
-
+  //teste
   it('should return 500 if something goes wrong during the processing', async () => {
     nock('https://api.stormglass.io:443', {
       encodedQueryParams: true,
